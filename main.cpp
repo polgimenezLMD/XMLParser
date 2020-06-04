@@ -15,9 +15,11 @@ int main(int argc, char *argv[])
         QString SdfIdtoCanonicalId;
         QString RgroupsAtoms;
         QString RGroupsAtomIds;
-        QString RgroupsAtomIds;
+        QString amino = "arginine";
+        int num1 = 1 ;
+        int num2 = 73;
 
-        QFile file("test2.xml");
+        QFile file("t.xml");
         if(!file.open(QFile::ReadOnly | QFile::Text)){
             qDebug() << "Cannot read file" << file.errorString();
             exit(0);
@@ -56,9 +58,9 @@ int main(int argc, char *argv[])
             if ((text == QStringLiteral("Struct2D")))
             {
                 Struct2D = xmlReader.readElementText();
-                int start_position = Struct2D.indexOf("&#xA                    2D&#xA&#xA ");
-                int end_position = start_position + 35;
-                Struct2D.remove(start_position, end_position);
+                //int start_position = Struct2D.indexOf("&#xA                    2D&#xA&#xA ");
+                //int end_position = start_position + 35;
+                //Struct2D.remove(start_position, end_position);
                 Struct2D.replace("&#xA","\n");
             }
             if ((text == QStringLiteral("SdfIdtoCanonicalId")))
@@ -72,18 +74,16 @@ int main(int argc, char *argv[])
             if ((text == QStringLiteral("RGroupsAtomIds")))
             {
                 RGroupsAtomIds = xmlReader.readElementText();
-            }
-            if ((text == QStringLiteral("RgroupsAtomIds")))
-            {
-                RgroupsAtomIds = xmlReader.readElementText();
-                QString result = "INSERT INTO Inchies(id, MonomerId, StdInChI, StdInChIKey,"
-                                 "FixedHInChI, FixedHInChIKey, Structure, SdfIdtoCanonicalId,"
-                                 "RgroupsAtoms, RGroupsAtomIds, RgroupsAtomIds)"
-                                 "VALUES (1, 1, '" + StdInChI + "', '" + StdInChIKey + "', '" + FixedHInChI + "', '" + FixedHInChIKey + "', '" + Struct2D + "', '" + SdfIdtoCanonicalId + "', '" + RgroupsAtoms + "', '" + RGroupsAtomIds + "', '" + RgroupsAtomIds  +"')";
+                QString aminoacid = amino + QString::number(num1);
+                QString id = QString::number(num2);
+                QString result = "QString " + aminoacid + " = INSERT INTO MonomerDetails(id, MonomerNameId, StdInChI, StdInChIKey,"
+                                 " FixedHInChI, FixedHInChIKey, Structure, SdfIdtoCanonicalId,"
+                                 " RgroupsAtoms, RGroupsAtomIds)"
+                                 " VALUES (" + id + ", 15, '" + StdInChI + "', '" + StdInChIKey + "', '" + FixedHInChI + "', '" + FixedHInChIKey + "', '" + Struct2D + "', '" + SdfIdtoCanonicalId + "', '" + RgroupsAtoms + "', '" + RGroupsAtomIds + "');pol";
                 qDebug() << result << endl;
-
+                num1++;
+                num2++;
             }
-
         }
 
         if (xmlReader.hasError()) {
